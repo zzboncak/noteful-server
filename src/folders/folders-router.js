@@ -18,7 +18,7 @@ foldersRouter
             req.app.get('db')
         )
             .then(folders => {
-                res.json(folders)
+                res.json(folders.map(serializeFolder))
             })
             .catch(next)
     })
@@ -40,7 +40,7 @@ foldersRouter
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `/${folder.id}`))
-                .json(folder)
+                .json(serializeFolder(folder))
         })
         .catch(next)
     });
@@ -92,7 +92,7 @@ foldersRouter
             folderToUpdate
         )
         .then(numRowsAffected => {
-            res.status(204).end()
+            res.status(204).end();
         })
         .catch(next)
     });
